@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Partner Registration — THAIFEX Anuga Asia 2026</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f0f4f2; min-height: 100vh; padding: 2rem 1rem; color: #1a1a1a; }
+  .container { max-width: 720px; margin: 0 auto; }
+
+  /* Header */
+  .header { background: linear-gradient(135deg, #0F6E56 0%, #1D9E75 60%, #5DCAA5 100%); border-radius: 14px; padding: 1.75rem 2rem; margin-bottom: 1.25rem; color: #fff; position: relative; overflow: hidden; }
+  .header::before { content: ''; position: absolute; top: -40px; right: -30px; width: 160px; height: 160px; border-radius: 50%; background: rgba(255,255,255,.07); }
+  .header::after { content: ''; position: absolute; bottom: -25px; right: 80px; width: 90px; height: 90px; border-radius: 50%; background: rgba(255,255,255,.05); }
+  .badge-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; position: relative; }
+  .badge { background: rgba(255,255,255,.2); font-size: 11px; padding: 3px 11px; border-radius: 20px; letter-spacing: .5px; font-weight: 600; }
+  .header h1 { font-size: 22px; font-weight: 600; line-height: 1.3; margin-bottom: 4px; position: relative; }
+  .header p { font-size: 13px; opacity: .85; position: relative; }
+
+  /* Config bar */
+  .config-bar { background: #fff; border: 1px solid #d1e8df; border-radius: 10px; padding: 12px 16px; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .config-bar label { font-size: 12px; font-weight: 600; color: #555; white-space: nowrap; }
+  .config-bar input { flex: 1; min-width: 220px; font-size: 12px; padding: 7px 11px; border: 1px solid #c8ddd7; border-radius: 7px; background: #f8fdfb; color: #1a1a1a; font-family: inherit; outline: none; }
+  .config-bar input:focus { border-color: #1D9E75; box-shadow: 0 0 0 3px rgba(29,158,117,.12); }
+  .conn-status { display: flex; align-items: center; gap: 5px; font-size: 12px; padding: 5px 12px; border-radius: 20px; font-weight: 600; white-space: nowrap; }
+  .conn-status.off { background: #fde8e8; color: #b91c1c; }
+  .conn-status.on { background: #dcfce7; color: #15803d; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+
+  /* Toast */
+  .toast { display: none; padding: 11px 16px; border-radius: 9px; font-size: 13px; margin-bottom: 1rem; border: 1px solid; }
+  .toast.ok { background: #f0fdf4; border-color: #86efac; color: #15803d; }
+  .toast.err { background: #fef2f2; border-color: #fca5a5; color: #b91c1c; }
+
+  /* Sections */
+  .section { background: #fff; border: 1px solid #e2ede9; border-radius: 12px; padding: 1.4rem 1.6rem; margin-bottom: 1rem; }
+  .sec-title { font-size: 11px; font-weight: 700; color: #1D9E75; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1.1rem; display: flex; align-items: center; gap: 7px; }
+  .sec-title svg { width: 16px; height: 16px; stroke: #1D9E75; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* Grids */
+  .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+  .g1 { display: grid; grid-template-columns: 1fr; gap: 14px; }
+  .mt { margin-top: 14px; }
+
+  /* Fields */
+  .field { display: flex; flex-direction: column; gap: 5px; }
+  .field label { font-size: 13px; color: #444; font-weight: 600; }
+  .req { color: #dc2626; margin-left: 2px; }
+  .field input, .field select, .field textarea {
+    font-family: inherit; font-size: 14px; padding: 9px 13px;
+    border: 1px solid #d1d5db; border-radius: 8px;
+    background: #f9fafb; color: #1a1a1a;
+    transition: border-color .15s, box-shadow .15s; outline: none;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    border-color: #1D9E75; box-shadow: 0 0 0 3px rgba(29,158,117,.12); background: #fff;
+  }
+  .field textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
+
+  /* Checkboxes */
+  .cb-group { display: flex; flex-direction: column; gap: 9px; margin-top: 7px; }
+  .cb-item { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+  .cb-item input[type="checkbox"] { width: 16px; height: 16px; accent-color: #1D9E75; cursor: pointer; }
+  .cb-item span { font-size: 13px; color: #333; }
+
+  /* Rating */
+  .rating-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 7px; }
+  .r-btn {
+    padding: 7px 15px; border: 1px solid #d1d5db; border-radius: 20px;
+    font-size: 13px; cursor: pointer; background: #f9fafb; color: #555;
+    transition: all .15s; font-family: inherit;
+  }
+  .r-btn:hover { border-color: #1D9E75; color: #1D9E75; background: #f0fdf8; }
+  .r-btn.on { background: #1D9E75; color: #fff; border-color: #1D9E75; }
+
+  /* Divider */
+  .divider { height: 1px; background: #f0f0f0; margin: 1.1rem 0; }
+
+  /* Buttons */
+  .submit-row { display: flex; gap: 12px; align-items: center; justify-content: flex-end; margin-top: 1.5rem; }
+  .btn-clear { padding: 11px 22px; border: 1px solid #d1d5db; border-radius: 9px; background: #fff; color: #555; font-size: 14px; cursor: pointer; font-family: inherit; transition: background .15s; }
+  .btn-clear:hover { background: #f3f4f6; }
+  .btn-submit { padding: 11px 26px; background: #0F6E56; border: none; border-radius: 9px; color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; display: flex; align-items: center; gap: 8px; transition: background .15s; }
+  .btn-submit:hover:not(:disabled) { background: #085041; }
+  .btn-submit:disabled { background: #7bcfb5; cursor: not-allowed; }
+
+  /* Spinner */
+  .spinner { width: 15px; height: 15px; border: 2px solid rgba(255,255,255,.4); border-top-color: #fff; border-radius: 50%; animation: spin .7s linear infinite; display: none; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Footer */
+  .footer { text-align: center; font-size: 12px; color: #999; margin-top: 2rem; padding-bottom: 1rem; }
+
+  @media (max-width: 540px) {
+    .g2, .g3 { grid-template-columns: 1fr; }
+    .header h1 { font-size: 18px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="badge-row">
+      <span class="badge">THAIFEX – Anuga Asia 2026</span>
+      <span class="badge">26–30 May 2026</span>
+      <span class="badge">IMPACT Arena, Bangkok</span>
+    </div>
+    <h1>Partner Registration Form</h1>
+    <p>Please complete all required fields. Data will be saved to Google Sheets automatically.</p>
+  </div>
+
+  <!-- Google Sheets Config -->
+  <div class="config-bar">
+    <label>&#128196; Google Sheets Web App URL</label>
+    <input type="url" id="sheet-url" placeholder="Paste your Apps Script Web App URL here..." oninput="checkUrl()" />
+    <span class="conn-status off" id="conn-status"><span class="dot"></span>Not connected</span>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <!-- Form -->
+  <form id="main-form" onsubmit="return false;">
+
+    <!-- Company -->
+    <div class="section">
+      <div class="sec-title">
+        <svg viewBox="0 0 24 24"><path d="M3 21h18M9 21V7l6-4v18M9 12h6M9 17h6"/></svg>
+        Company Information
+      </div>
+      <div class="g2">
+        <div class="field"><label>Company Name<span class="req">*</span></label><input type="text" id="company" placeholder="Enter company name" /></div>
+        <div class="field"><label>Country<span class="req">*</span></label>
+          <select id="country">
+            <option value="">-- Select country --</option>
+            <option>Thailand</option><option>China</option><option>Japan</option>
+            <option>South Korea</option><option>India</option><option>USA</option>
+            <option>Germany</option><option>Australia</option><option>Singapore</option>
+            <option>Vietnam</option><option>Indonesia</option><option>Malaysia</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="g2 mt">
+        <div class="field"><label>Business Type<span class="req">*</span></label>
+          <select id="biz-type">
+            <option value="">-- Select type --</option>
+            <option>Manufacturer</option><option>Importer / Exporter</option>
+            <option>Distributor</option><option>Retailer</option>
+            <option>Department Store</option><option>Restaurant & F&B</option>
+            <option>Hotel & Hospitality</option><option>Other</option>
+          </select>
+        </div>
+        <div class="field"><label>Company Size</label>
+          <select id="biz-size">
+            <option value="">-- Select size --</option>
+            <option>1–10 employees</option><option>11–50 employees</option>
+            <option>51–200 employees</option><option>201–500 employees</option>
+            <option>500+ employees</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact -->
+    <div class="section">
+      <div class="sec-title">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        Contact Person
+      </div>
+      <div class="g3">
+        <div class="field"><label>Title</label>
+          <select id="ptitle"><option>Mr.</option><option>Ms.</option><option>Mrs.</option><option>Dr.</option></select>
+        </div>
+        <div class="field"><label>First Name<span class="req">*</span></label><input type="text" id="fname" placeholder="First name" /></div>
+        <div class="field"><label>Last Name<span class="req">*</span></label><input type="text" id="lname" placeholder="Last name" /></div>
+      </div>
+      <div class="g2 mt">
+        <div class="field"><label>Job Title<span class="req">*</span></label><input type="text" id="job-title" placeholder="e.g. CEO, Purchasing Manager" /></div>
+        <div class="field"><label>Phone<span class="req">*</span></label><input type="tel" id="phone" placeholder="+66 8X-XXXX-XXXX" /></div>
+      </div>
+      <div class="g2 mt">
+        <div class="field"><label>Email<span class="req">*</span></label><input type="email" id="email" placeholder="email@company.com" /></div>
+        <div class="field"><label>LINE / WeChat / WhatsApp</label><input type="text" id="messenger" placeholder="ID and platform" /></div>
+      </div>
+    </div>
+
+    <!-- Products -->
+    <div class="section">
+      <div class="sec-title">
+        <svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        Product Interest
+      </div>
+      <div class="field">
+        <label>Product Categories (select all that apply)</label>
+        <div class="cb-group">
+          <label class="cb-item"><input type="checkbox" value="Processed Food" /><span>Processed Food</span></label>
+          <label class="cb-item"><input type="checkbox" value="Beverages" /><span>Beverages</span></label>
+          <label class="cb-item"><input type="checkbox" value="Health & Organic Food" /><span>Health & Organic Food</span></label>
+          <label class="cb-item"><input type="checkbox" value="Pet Food & Animal Feed" /><span>Pet Food & Animal Feed</span></label>
+          <label class="cb-item"><input type="checkbox" value="Ingredients & Raw Materials" /><span>Ingredients & Raw Materials</span></label>
+          <label class="cb-item"><input type="checkbox" value="Packaging" /><span>Packaging</span></label>
+          <label class="cb-item"><input type="checkbox" value="Machinery & Technology" /><span>Machinery & Technology</span></label>
+          <label class="cb-item"><input type="checkbox" value="Other" /><span>Other</span></label>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="g2">
+        <div class="field"><label>Visit Purpose<span class="req">*</span></label>
+          <select id="purpose">
+            <option value="">-- Select --</option>
+            <option>Source new products</option><option>Business negotiation</option>
+            <option>Import / Export</option><option>Market research</option>
+            <option>Investment opportunity</option><option>Other</option>
+          </select>
+        </div>
+        <div class="field"><label>Estimated Order Volume</label>
+          <select id="order-vol">
+            <option value="">-- Select --</option>
+            <option>Under $3,000</option><option>$3,000 – $15,000</option>
+            <option>$15,000 – $60,000</option><option>Over $60,000</option>
+          </select>
+        </div>
+      </div>
+      <div class="g1 mt">
+        <div class="field"><label>Additional Notes</label>
+          <textarea id="notes" placeholder="Specific product details, requirements, or other messages..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Impression -->
+    <div class="section">
+      <div class="sec-title">
+        <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        Booth Impression
+      </div>
+      <div class="field" style="margin-bottom:14px;">
+        <label>Interest Level<span class="req">*</span></label>
+        <div class="rating-row" id="interest-row">
+          <button type="button" class="r-btn" onclick="rate(this,'interest')">1 – Very Low</button>
+          <button type="button" class="r-btn" onclick="rate(this,'interest')">2 – Low</button>
+          <button type="button" class="r-btn" onclick="rate(this,'interest')">3 – Moderate</button>
+          <button type="button" class="r-btn" onclick="rate(this,'interest')">4 – High</button>
+          <button type="button" class="r-btn on" onclick="rate(this,'interest')">5 – Very High</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>Likelihood to Purchase</label>
+        <div class="rating-row" id="purchase-row">
+          <button type="button" class="r-btn" onclick="rate(this,'purchase')">Very Low</button>
+          <button type="button" class="r-btn" onclick="rate(this,'purchase')">Low</button>
+          <button type="button" class="r-btn" onclick="rate(this,'purchase')">Moderate</button>
+          <button type="button" class="r-btn on" onclick="rate(this,'purchase')">High</button>
+          <button type="button" class="r-btn" onclick="rate(this,'purchase')">Very High</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Follow-up -->
+    <div class="section">
+      <div class="sec-title">
+        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Follow-up
+      </div>
+      <div class="g2">
+        <div class="field"><label>Preferred Follow-up Channel</label>
+          <select id="followup-ch">
+            <option value="">-- Select --</option>
+            <option>Email</option><option>Phone call</option>
+            <option>LINE / WhatsApp</option><option>Send product sample</option>
+            <option>Online meeting</option><option>No follow-up needed</option>
+          </select>
+        </div>
+        <div class="field"><label>Preferred Date</label><input type="date" id="followup-date" /></div>
+      </div>
+      <div style="margin-top:14px;">
+        <label class="cb-item">
+          <input type="checkbox" id="consent" checked />
+          <span style="font-size:13px;">I consent to receive product news and promotions from this company.</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="submit-row">
+      <button type="button" class="btn-clear" onclick="clearForm()">Clear</button>
+      <button type="button" class="btn-submit" id="submit-btn" onclick="submitForm()">
+        <span class="spinner" id="spinner"></span>
+        <span id="submit-label">&#128190; Save to Google Sheets</span>
+      </button>
+    </div>
+
+  </form>
+
+  <div class="footer">THAIFEX – Anuga Asia 2026 &nbsp;|&nbsp; IMPACT Arena, Bangkok &nbsp;|&nbsp; 26–30 May 2026</div>
+</div>
+
+<script>
+  let ratings = { interest: '5 – Very High', purchase: 'High' };
+
+  function rate(btn, key) {
+    btn.closest('.rating-row').querySelectorAll('.r-btn').forEach(b => b.classList.remove('on'));
+    btn.classList.add('on');
+    ratings[key] = btn.textContent.trim();
+  }
+
+  function checkUrl() {
+    var url = document.getElementById('sheet-url').value.trim();
+    var st = document.getElementById('conn-status');
+    if (url.startsWith('https://script.google.com')) {
+      st.className = 'conn-status on';
+      st.innerHTML = '<span class="dot"></span>Connected';
+    } else {
+      st.className = 'conn-status off';
+      st.innerHTML = '<span class="dot"></span>Not connected';
+    }
+  }
+
+  function showToast(msg, type) {
+    var t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast ' + type;
+    t.style.display = 'block';
+    t.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    setTimeout(function() { t.style.display = 'none'; }, 5000);
+  }
+
+  async function submitForm() {
+    var url = document.getElementById('sheet-url').value.trim();
+    if (!url.startsWith('https://script.google.com')) {
+      showToast('⚠ Please paste a valid Google Apps Script Web App URL first.', 'err');
+      return;
+    }
+    var required = ['company','country','biz-type','fname','lname','job-title','phone','email','purpose'];
+    for (var i = 0; i < required.length; i++) {
+      var el = document.getElementById(required[i]);
+      if (!el.value.trim()) {
+        showToast('⚠ Please fill in all required fields (*).', 'err');
+        el.focus();
+        return;
+      }
+    }
+
+    var cats = Array.from(document.querySelectorAll('.cb-group input:checked')).map(function(c){ return c.value; }).join(', ');
+
+    var payload = {
+      Timestamp: new Date().toLocaleString('en-GB'),
+      Company: document.getElementById('company').value,
+      Country: document.getElementById('country').value,
+      BusinessType: document.getElementById('biz-type').value,
+      CompanySize: document.getElementById('biz-size').value,
+      Title: document.getElementById('ptitle').value,
+      FirstName: document.getElementById('fname').value,
+      LastName: document.getElementById('lname').value,
+      JobTitle: document.getElementById('job-title').value,
+      Phone: document.getElementById('phone').value,
+      Email: document.getElementById('email').value,
+      Messenger: document.getElementById('messenger').value,
+      ProductCategories: cats,
+      VisitPurpose: document.getElementById('purpose').value,
+      OrderVolume: document.getElementById('order-vol').value,
+      Notes: document.getElementById('notes').value,
+      InterestLevel: ratings.interest,
+      PurchaseLikelihood: ratings.purchase,
+      FollowUpChannel: document.getElementById('followup-ch').value,
+      FollowUpDate: document.getElementById('followup-date').value,
+      Consent: document.getElementById('consent').checked ? 'Yes' : 'No'
+    };
+
+    var btn = document.getElementById('submit-btn');
+    var spinner = document.getElementById('spinner');
+    var lbl = document.getElementById('submit-label');
+    btn.disabled = true;
+    spinner.style.display = 'block';
+    lbl.textContent = 'Saving...';
+
+    try {
+      await fetch(url, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      showToast('✓ Partner data saved to Google Sheets successfully!', 'ok');
+      clearForm();
+    } catch(e) {
+      showToast('✗ Failed to save. Please check the URL and try again.', 'err');
+    } finally {
+      btn.disabled = false;
+      spinner.style.display = 'none';
+      lbl.textContent = '💾 Save to Google Sheets';
+    }
+  }
+
+  function clearForm() {
+    document.querySelectorAll('input[type=text], input[type=email], input[type=tel], input[type=date], textarea').forEach(function(e){ e.value = ''; });
+    document.querySelectorAll('select').forEach(function(e){ e.selectedIndex = 0; });
+    document.querySelectorAll('.cb-group input[type=checkbox]').forEach(function(e){ e.checked = false; });
+    document.getElementById('consent').checked = true;
+    document.getElementById('interest-row').querySelectorAll('.r-btn').forEach(function(b,i){ b.classList.toggle('on', i===4); });
+    document.getElementById('purchase-row').querySelectorAll('.r-btn').forEach(function(b,i){ b.classList.toggle('on', i===3); });
+    ratings = { interest: '5 – Very High', purchase: 'High' };
+  }
+</script>
+</body>
+</html>
