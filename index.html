@@ -134,7 +134,7 @@
       </div>
       <div class="g2 mt">
         <div class="field"><label>Email<span class="req">*</span></label><input type="email" id="email" placeholder="email@company.com" /></div>
-        <div class="field"><label>LINE / WeChat / WhatsApp</label><input type="text" id="messenger" placeholder="ID and platform" /></div>
+        <div class="field"><label>LINE / WeChat / WhatsApp<span class="req">*</span></label><input type="text" id="messenger" placeholder="ID and platform" /></div>
       </div>
     </div>
 
@@ -169,8 +169,8 @@
         <div class="field"><label>Estimated Order Volume</label>
           <select id="order-vol">
             <option value="">-- Select --</option>
-            <option>Under $3,000</option><option>$3,000 – $15,000</option>
-            <option>$15,000 – $60,000</option><option>Over $60,000</option>
+            <option>Under $700</option><option>$700 – $3,000</option>
+            <option>$3,000 – $15,000</option><option>Over $15,000</option>
           </select>
         </div>
       </div>
@@ -214,7 +214,7 @@
         Follow-up
       </div>
       <div class="g2">
-        <div class="field"><label>Preferred Follow-up Channel</label>
+        <div class="field"><label>Preferred Follow-up Channel<span class="req">*</span></label>
           <select id="followup-ch">
             <option value="">-- Select --</option>
             <option>Email</option><option>Phone call</option>
@@ -264,7 +264,7 @@
   }
 
   async function submitForm() {
-    var required = ['company','country','biz-type','fname','lname','job-title','phone','email','purpose'];
+    var required = ['company','country','biz-type','fname','lname','job-title','phone','email','messenger','purpose','followup-ch'];
     for (var i = 0; i < required.length; i++) {
       var el = document.getElementById(required[i]);
       if (!el.value.trim()) {
